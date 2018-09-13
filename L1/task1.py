@@ -4,6 +4,8 @@ def crossing(x1,y1,x2,y2,x3,y3,x4,y4):
 		 A_1(x_1, y_1), A_2(x_2, y_2)
 		 B_1(x_3, y_3), B_2(x_4, y_4)
 
+	1) If we do not have vertical lines
+
 	As we remember, y(x) = k * x + b --- equation of line.
 	As we have two lines, we have 2 sets of parameters:
 	for line 1 --- k_1 and b_1
@@ -11,9 +13,9 @@ def crossing(x1,y1,x2,y2,x3,y3,x4,y4):
 
 	We have the following system of linear equations:
 	k_1 * x_1 + b_1 = y_1
-	k_2 * x_2 + b_2 = y_2
-	k_3 * x_3 + b_3 = y_3
-	k_4 * x_4 + b_4 = y_3
+	k_1 * x_2 + b_1 = y_2
+	k_2 * x_3 + b_2 = y_3
+	k_2 * x_4 + b_2 = y_3
 	From this system we obtain parameters of lines
 
 	As we also know, two lines are parallel, 
@@ -23,21 +25,41 @@ def crossing(x1,y1,x2,y2,x3,y3,x4,y4):
 	solve the following system of equations:
 	y = k_1 * x + b_1
 	y = k_2 * x + b_2
+
+	2) One of the lines is vertical
 	'''
+	if x1 == x2 == x3 == x4 or y1 == y2 == y3 == y4:
+		return 'similar lines'		
+	elif x1 != x2 and x3 != x4:
+		k1 = ( y2 - y1 ) / ( x2 - x1 )
+		k2 = ( y4 - y3 ) / ( x4 - x3 )
+	
+		if k1 == k2: 
+			return 'is parallel'
+	
+		b1 = y1 - k1 * x1
+		b2 = y3 - k2 * x3
+	
+		x = ( b2 - b1 ) / ( k1 - k2 )
+		y = k1 * x + b1
+	
+		return x, y
+
+	elif x1 == x2 and x3 == x4:
+		return 'is parallel'
+	
+	elif x1 == x2:
+		k2 = ( y4 - y3 ) / ( x4 - x3 )
+		b2 = y3 - k2 * x3
+		y = k2 * x1 + b2
+	
+		return x1, y
+
 	k1 = ( y2 - y1 ) / ( x2 - x1 )
-	k2 = ( y4 - y3 ) / ( x4 - x3 )
-
-	if k1 == k2: 
-		print('lines are parallel')
-		return None
-
 	b1 = y1 - k1 * x1
-	b2 = y3 - k2 * x3
+	y = k1 * x3 + b1
 
-	x = ( b2 - b1 ) / ( k1 - k2 )
-	y = k1 * x + b1
-
-	return x, y
+	return x3, y
 
 def reccurent_fib( N ):
 	'''
@@ -77,6 +99,8 @@ def is_prime( N ):
 	Then we check, if numbers from 2 to N are devisors of N.
 	If N = divisor * q, then N is not prime.
 	'''
+	if N == 0:
+		return 'not prime'
 	if N == 1:
 		return 'neither prime, nor non-prime'
 	i = 2
@@ -96,7 +120,7 @@ def all_divisors( N ):
 		return N
 	i = 2
 	while i < N:
-		if N % i == 0: print( i )
+		if N % i == 0: print( i, end = ', ' )
 		i += 1
 	print( N )
 
